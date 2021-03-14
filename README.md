@@ -1,5 +1,7 @@
 # Godot Platformer 1
 
+[![CircleCI](https://circleci.com/gh/mtlynch/godot-platformer-1.svg?style=svg)](https://circleci.com/gh/mtlynch/godot-platformer-1)
+
 ## Overview
 
 This is just a simple game my girlfriend and I are working on to learn Godot.
