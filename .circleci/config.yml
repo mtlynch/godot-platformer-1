@@ -1,0 +1,39 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: mtlynch/godot
+    steps:
+      - checkout
+      - run:
+          name: create build directory
+          command: mkdir dist
+      - run:
+          name: Export HTML5 version
+          command: godot --export HTML5 project.godot dist/index.html
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - ./dist
+            - firebase.json
+            - .firebaserc
+  deploy:
+    docker:
+      - image: mtlynch/firebase-tools:8.1.1-node-14.0.0
+    steps:
+      - attach_workspace:
+          at: ./
+      - run:
+          name: Deploy to firebase
+          command: firebase deploy --token="$FIREBASE_DEPLOY_TOKEN"
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
